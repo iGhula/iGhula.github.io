@@ -58,8 +58,8 @@
     .nav-link {
       color: #64748b;
       text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
+      font-size: 1rem;
+      font-weight: 600;
       padding-bottom: 4px;
       transition: all 0.2s;
     }
@@ -91,6 +91,21 @@
     .resume-btn:hover {
       transform: scale(1.05);
       box-shadow: 0 6px 8px -1px rgba(99, 102, 241, 0.6);
+    }
+    
+    /* Mobile Styles */
+    @media (max-width: 640px) {
+      .nav-links {
+        gap: 20px;
+      }
+      
+      .nav-link {
+        font-size: 0.95rem;
+      }
+      
+      .resume-btn {
+        padding: 6px 12px;
+      }
     }
 
     /* Page Title */
