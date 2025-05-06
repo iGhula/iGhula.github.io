@@ -92,19 +92,100 @@
       transform: scale(1.05);
       box-shadow: 0 6px 8px -1px rgba(99, 102, 241, 0.6);
     }
-
+    
+    /* Mobile menu */
+    .mobile-menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 21px;
+      cursor: pointer;
+      z-index: 60;
+    }
+    
+    .mobile-menu-toggle span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: #4f46e5;
+      border-radius: 3px;
+      transition: all 0.3s;
+    }
+    
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      width: 250px;
+      height: 100%;
+      background: white;
+      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+      z-index: 55;
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      padding-top: 80px;
+    }
+    
+    .sidebar.active {
+      right: 0;
+    }
+    
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 20px;
+    }
+    
+    .sidebar-link {
+      color: #64748b;
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      padding: 8px 16px;
+      border-radius: 8px;
+    }
+    
+    .sidebar-link:hover {
+      background-color: #f1f5f9;
+      color: #4f46e5;
+    }
+    
+    .sidebar-link.active {
+      color: #4f46e5;
+      background-color: #ede9fe;
+    }
+    
+    .sidebar-resume {
+      margin: 24px 20px;
+    }
+    
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 50;
+      display: none;
+    }
+    
+    .overlay.active {
+      display: block;
+    }
+    
     /* Mobile Styles */
-    @media (max-width: 640px) {
-      .nav-links {
-        gap: 20px;
+    @media (max-width: 768px) {
+      .nav-links, header .resume-btn {
+        display: none;
       }
       
-      .nav-link {
-        font-size: 0.95rem;
-      }
-      
-      .resume-btn {
-        padding: 6px 12px;
+      .mobile-menu-toggle {
+        display: flex;
       }
     }
 
@@ -368,8 +449,31 @@
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <a href="IbrahimGhulaResume.pdf" target="_blank" rel="noopener noreferrer" class="resume-btn">Resume</a>
+      
+      <!-- Mobile menu toggle -->
+      <div class="mobile-menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
   </header>
+  
+  <!-- Mobile sidebar -->
+  <div class="sidebar">
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link active">Home</a>
+      <a href="projects.html" class="sidebar-link">Projects</a>
+      <a href="skills.html" class="sidebar-link">Skills</a>
+      <a href="contact.html" class="sidebar-link">Contact</a>
+    </nav>
+    <div class="sidebar-resume">
+      <a href="IbrahimGhulaResume.pdf" target="_blank" rel="noopener noreferrer" class="resume-btn">Resume</a>
+    </div>
+  </div>
+  
+  <!-- Overlay for mobile menu -->
+  <div class="overlay"></div>
   
   <main>
     <section class="hero-section container">
@@ -492,5 +596,48 @@
       </p>
     </div>
   </footer>
+
+  <script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.querySelector('.mobile-menu-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.querySelector('.overlay');
+      
+      function toggleMenu() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        
+        // Toggle hamburger to X
+        const spans = menuToggle.querySelectorAll('span');
+        if (sidebar.classList.contains('active')) {
+          spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+          spans[1].style.opacity = '0';
+          spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+        } else {
+          spans[0].style.transform = 'none';
+          spans[1].style.opacity = '1';
+          spans[2].style.transform = 'none';
+        }
+      }
+      
+      menuToggle.addEventListener('click', toggleMenu);
+      overlay.addEventListener('click', toggleMenu);
+      
+      // Close menu when clicking a link
+      const sidebarLinks = document.querySelectorAll('.sidebar-link');
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          sidebar.classList.remove('active');
+          overlay.classList.remove('active');
+          
+          const spans = menuToggle.querySelectorAll('span');
+          spans[0].style.transform = 'none';
+          spans[1].style.opacity = '1';
+          spans[2].style.transform = 'none';
+        });
+      });
+    });
+  </script>
 </body>
 </html> 
