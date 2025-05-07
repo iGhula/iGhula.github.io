@@ -1174,7 +1174,7 @@
 
     <section class="skills-section">
       <div class="container">
-        <h2 class="section-title">My <span class="gradient-text">Skills</span></h2>
+        <h2 class="section-title">My New <span class="gradient-text">Skills</span></h2>
         
         <div class="skills-carousel">
           <div class="skills-container">
@@ -1538,6 +1538,21 @@
           // Re-initialize chatbot
           initializeChatbot();
           
+          // Force style recalculation (fixes GitHub Pages style issue)
+          document.body.offsetHeight;
+          
+          // Apply hard refresh if coming from home page to another page (fixes style issue)
+          const currentPage = url.split('/').pop();
+          if (currentPage !== 'index.html' && currentPage !== '' && window.lastVisitedPage === 'index.html') {
+            setTimeout(() => {
+              window.location.href = url;
+            }, 10);
+            return;
+          }
+          
+          // Store last visited page
+          window.lastVisitedPage = currentPage || 'index.html';
+          
           // End loading animation
           loadingIndicator.style.display = 'none';
           pageContent.style.opacity = '1';
@@ -1569,6 +1584,13 @@
         
         // Don't reload current page
         if (url === window.location.pathname.split('/').pop()) {
+          return;
+        }
+        
+        // Check if going from home to another page and do a hard refresh
+        const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+        if (currentPath === 'index.html' && url !== 'index.html') {
+          window.location.href = url;
           return;
         }
         
@@ -1667,6 +1689,9 @@
         '', 
         window.location.href
       );
+      
+      // Store the initial page
+      window.lastVisitedPage = window.location.pathname.split('/').pop() || 'index.html';
       
       // Initialize navigation
       setupNavigation();
